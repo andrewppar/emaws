@@ -23,7 +23,7 @@
   (let ((name (buffer-name)))
     (if (string-prefix-p "*s3" name)
 	(emaws-s3/step)
-      (emsws-s3/start))))
+      (emaws-s3/start))))
 
 (provide 'emaws)
 ;;; emaws.el ends here
