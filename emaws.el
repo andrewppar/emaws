@@ -17,6 +17,7 @@
 ;;; Code:
 (require 'emaws-s3)
 
+;;;###autoload
 (defun emaws/s3-action ()
   (interactive)
   ;; make this more robust - we probably need some minor modes
