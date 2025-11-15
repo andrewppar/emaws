@@ -17,6 +17,7 @@
 ;;; Code:
 (require 'emaws-core)
 (require 'subr-x)
+(require 'cl-lib)
 
 (defun emaws-s3-core--list-buckets (region)
   (let ((args (list "--output" "json")))
@@ -27,22 +28,15 @@
      :array-type 'list
      :false-object nil)))
 
-(defun emaws-s3-core--parse-aws-bucket! (keys aws-bucket)
+(defun emaws-s3-core--parse-aws-bucket! (aws-bucket)
   (cl-destructuring-bind (&key Name CreationDate BucketArn &allow-other-keys)
       aws-bucket
     (list :name Name :created CreationDate :arn BucketArn)))
 
 (defun emaws-s3-core/list-buckets (region)
-  (let ((keys (list :s3 (or region :default))))
-    ;; this function call needs to be cached itself -
-    ;; we can add keys to the state in other ways too
-    ;;(or (emaws-core/get-in emaws-core/state key)
-    (cl-destructuring-bind (&key Buckets _Owner _Prefix &allow-other-keys)
-	(emaws-s3-core--list-buckets region)
-      (mapcar
-       (lambda (aws-bucket)
-	 (emaws-s3-core--parse-aws-bucket! keys aws-bucket))
-       Buckets))))
+  (cl-destructuring-bind (&key Buckets _Owner _Prefix &allow-other-keys)
+      (emaws-s3-core--list-buckets region)
+    (mapcar #'emaws-s3-core--parse-aws-bucket! Buckets)))
 
 (defun emaws-s3-core--list-objects (region bucket path)
   (let* ((args (list "--bucket" bucket "--delimiter" "/")))
