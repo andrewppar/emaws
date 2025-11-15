@@ -15,7 +15,7 @@
 ;;;
 
 ;;; Code:
-(require 'emaws-s3)
+(require 'emaws-s3-display)
 
 (defun emaws-s3/start ()
   (emaws-s3-display/show-buckets))
