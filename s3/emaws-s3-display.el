@@ -18,6 +18,12 @@
 (require 'emaws-s3-core)
 (require 'emaws-face)
 
+(define-derived-mode emaws/s3-mode fundamental-mode
+  "Mode for displaying s3 objects"
+  "Major mode for viewing s3 objects."
+  (define-key emaws/s3-mode-map
+      (kbd "C-c q") (lambda () (interactive) (kill-buffer (current-buffer)))))
+
 (defvar emaws-s3-display--buffers '())
 
 (defmacro emaws-s3--with-buffer (buffer-name &rest body)
@@ -29,6 +35,7 @@
 		(inhibit-read-only t))
 	    (push ,buffer emaws-s3-display--buffers)
 	    (erase-buffer)
+	    (emaws/s3-mode 1)
 	    (progn ,@body))
        (read-only-mode 1))))
 
