@@ -35,7 +35,7 @@
 		(inhibit-read-only t))
 	    (push ,buffer emaws-s3-display--buffers)
 	    (erase-buffer)
-	    (emaws/s3-mode 1)
+	    (emaws/s3-mode)
 	    (progn ,@body))
        (read-only-mode 1))))
 
