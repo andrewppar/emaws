@@ -93,6 +93,5 @@
     (emaws-s3-core--handle-cli-response
      (emaws-core/execute "s3api" "get-object" args))))
 
-
 (provide 'emaws-s3-core)
 ;;; emaws-s3-core.el ends here

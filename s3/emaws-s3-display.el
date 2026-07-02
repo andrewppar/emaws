@@ -152,11 +152,6 @@
 	      (mapcar #'emaws-s3-display--format-object objects))
 	"\n")))))
 
-(defun emaws-s3-display--download (region bucket path item)
-  "Download the object at REGION BUCKET PATH and ITEM."
-  (let ((to (read-file-name "destination: ")))
-    (emaws-s3-core/download region bucket path item to)))
-
 (defun emaws-s3-display/step ()
   "Take one step in an emaws s3 buffer depending on where point is."
   (interactive)
@@ -169,7 +164,11 @@
 	((or (equal item-type :prefix))
 	 (emaws-s3-display--step region bucket path item))
 	((equal item-type :object)
-	 (emaws-s3-display--download region bucket path item))
+	 (let ((to (if (y-or-n-p "Save? ")
+		       (read-file-name "destination: ")
+		     (make-temp-file "" nil item))))
+	   (emaws-s3-core/download region bucket path item to)
+	   (find-file to)))
 	((equal item-type :path)
 	 (let* ((back-step (cdr (reverse path)))
 		(previous-item (car back-step))
