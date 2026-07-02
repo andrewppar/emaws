@@ -44,7 +44,7 @@
 
 (defun emaws-core/put-in (plist keys value)
   (let ((result (seq-copy plist)))
-    (if-let ((key (car keys)))
+    (if-let* ((key (car keys)))
 	(if (cdr keys)
 	    (let* ((old-value (plist-get result key #'equal))
 		   (to-update (if (listp old-value) old-value nil))
