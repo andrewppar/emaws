@@ -45,7 +45,7 @@
 
 (defun emaws-s3-core/list-buckets (region)
   "Get the buckets in REGION in a way that emaws can consume."
-  (when-let ((buckets (emaws-s3-core--list-buckets region)))
+  (when-let* ((buckets (emaws-s3-core--list-buckets region)))
     (cl-destructuring-bind (&key Buckets _Owner _Prefix &allow-other-keys)
 	buckets
       (mapcar #'emaws-s3-core--parse-aws-bucket! Buckets))))
